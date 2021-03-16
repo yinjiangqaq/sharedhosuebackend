@@ -11,7 +11,7 @@ module.exports = (appInfo) => {
    * @type {Egg.EggAppConfig}
    **/
   const config = (exports = {
-    //env: "prod", //推荐云函数的egg运行环境修改为prod
+    env: "prod", //推荐云函数的egg运行环境修改为prod
     rundir: "/tmp",
     logger: {
       dir: "/tmp",
