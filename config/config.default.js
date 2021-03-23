@@ -33,7 +33,7 @@ module.exports = (appInfo) => {
       port: 3306,
       username: "root",
       password: "root",
-      database: "shareHouse",
+      database: "sharehouse",
     },
   };
 
