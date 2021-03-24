@@ -10,13 +10,7 @@ module.exports = (appInfo) => {
    * built-in config
    * @type {Egg.EggAppConfig}
    **/
-  const config = (exports = {
-    env: "prod", //推荐云函数的egg运行环境修改为prod
-    rundir: "/tmp",
-    logger: {
-      dir: "/tmp",
-    },
-  });
+  const config = (exports = {});
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + "_1615865843970_921";
@@ -34,6 +28,17 @@ module.exports = (appInfo) => {
       username: "root",
       password: "root",
       database: "sharehouse",
+    },
+    //解决跨域
+    cors: {
+      origin: "*",
+      allowMethods: "GET,HEAD,PUT,POST,DELETE,PATCH",
+    },
+    //关闭csrf
+    security: {
+      csrf: {
+        enable: false,
+      },
     },
   };
 
