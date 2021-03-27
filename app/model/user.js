@@ -30,7 +30,7 @@ module.exports = (app) => {
  * 用户表:MYSQL
  *
  #
-  CREATE TABLE eggTest.`user` (
+  CREATE TABLE sharehouse.`user` (
 `id` int(11) NOT NULL AUTO_INCREMENT,
 `username` varchar(100) DEFAULT NULL COMMENT '用户名',
 `password` varchar(100) DEFAULT NULL COMMENT '用户名',

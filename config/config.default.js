@@ -40,6 +40,12 @@ module.exports = (appInfo) => {
         enable: false,
       },
     },
+    //jwt加密字符串
+    jwt: {
+      secret: "sharedhouse",
+    },
+    //加载的额外的文件夹,app.constant
+    loaderDirs: ["constant"],
   };
 
   return {

@@ -1,5 +1,5 @@
 "use strict";
-
+const { CODE_MESSAGES } = require("../constant/code");
 module.exports = {
   /**
    * @description 成功返回
@@ -11,7 +11,7 @@ module.exports = {
       code,
       status,
       data,
-      msg: msg,
+      msg: msg || CODE_MESSAGES[code],
       success: true,
     };
   },
@@ -23,7 +23,7 @@ module.exports = {
     this.body = {
       code,
       data,
-      msg: msg,
+      msg: msg || CODE_MESSAGES[code],
       success: false,
     };
   },
