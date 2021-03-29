@@ -7,7 +7,7 @@ const emailConfig = {
   port: 465,
   auth: {
     user: "15918871221@163.com",
-    pass: "TVCTHTJMHQFPJPCA", //授权密码
+    pass: "xxx", //授权密码
   },
 };
 //创建一个smtp客户端对象
@@ -132,6 +132,21 @@ class UserController extends controller {
         }
       });
       return ctx.success({ msg: "该邮箱可用,邮箱验证码已经发送" });
+    }
+  }
+
+  async getUserInfo() {
+    const { app, ctx } = this;
+    const { RESPONSE_CODE } = app.constant.code;
+    // console.log("UserController", ctx.user);
+    if (ctx.user) {
+      const user = await ctx.service.user.index.get({ email: ctx.user.email });
+      //不直接返回密码了
+      return ctx.success({ data: ctx.user, msg: "返回用户信息" });
+    } else {
+      return ctx.fail({
+        code: RESPONSE_CODE.TOKEN_CHECK_FAILED,
+      });
     }
   }
 }

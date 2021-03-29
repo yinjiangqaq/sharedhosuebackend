@@ -19,8 +19,12 @@ module.exports = (app) => {
 
   //获取邮箱验证码
 
-  subRouter.post(
-    "/getVerifyCode",
-    controller.user.index.getVerifyCode
+  subRouter.post("/getVerifyCode", controller.user.index.getVerifyCode);
+
+  //获取用户信息
+  subRouter.get(
+    "/getUserInfo",
+    middleware.checkToken(),
+    controller.user.index.getUserInfo
   );
 };
