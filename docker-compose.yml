@@ -33,7 +33,7 @@ services:
       - app-network 
 
   nodejs:
-    build:                          # 这里指的是我们刚刚撸的 Dockerfile 文件
+  build:                          # 这里指的是我们刚刚撸的 Dockerfile 文件
     context: .                    
     dockerfile: Dockerfile
     image: nodejs                   # 镜像名称
@@ -44,12 +44,12 @@ services:
     links:                          # 容器连接
       - sharehouse_mysql:sharehouse_mysql
     networks:                       # 加入指定网络
-      - app-network
+       - app-network 
 
     volumes:
     certbot-etc:
     certbot-var:
-
-    networks:  # 实现通信
-    app-network:
+# 实现通信
+  networks:  
+    app-network: 
     driver: bridge
