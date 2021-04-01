@@ -1,4 +1,5 @@
-FROM node:10.0-alpine             # 镜像版本
+FROM node:10.0-alpine             
+# 镜像版本
 
 # 设置时区
 RUN apk --update add tzdata \
