@@ -1,55 +1,55 @@
-version: '3'
+version: "3"
 
 services:
   sharehouse_nginx:
-    image: nginx:stable-alpine      # 指定服务镜像
-    container_name: sharehouse_nginx    # 容器名称
-    restart: always                 # 重启方式
-    ports:                          # 映射端口
+    image: nginx:stable-alpine # 指定服务镜像
+    container_name: sharehouse_nginx # 容器名称
+    restart: always # 重启方式
+    ports: # 映射端口
       - "80:80"
-    volumes:                        # 挂载数据卷
+    volumes: # 挂载数据卷
       - /etc/localtime:/etc/localtime
       - /root/nginx/conf.d:/etc/nginx/conf.d
       - /root/nginx/logs:/var/log/nginx
-    depends_on:                     # 启动顺序
+    depends_on: # 启动顺序
       - nodejs
-    networks:                       # 加入指定网络
+    networks: # 加入指定网络
       - app-network
 
   sharehouse_mysql:
     image: mysql:5.7
     container_name: sharehouse_mysql
     restart: always
-    ports:                          # 映射端口
+    ports: # 映射端口
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=sharehouse       # 创建初始数据库
-      - TZ=Asia/Shanghai            # 设置时区
-    volumes:                        # 挂载数据卷
-      - /root/mysql:/var/lib/mysql  # 为了数据持久化
+      - MYSQL_DATABASE=sharehouse # 创建初始数据库
+      - TZ=Asia/Shanghai # 设置时区
+    volumes: # 挂载数据卷
+      - /root/mysql:/var/lib/mysql # 为了数据持久化
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    networks:                       # 加入指定网络
-      - app-network 
+    networks: # 加入指定网络
+      - app-network
 
   nodejs:
-  build:                          # 这里指的是我们刚刚撸的 Dockerfile 文件
-    context: .                    
-    dockerfile: Dockerfile
-    image: nodejs                   # 镜像名称
-    container_name: nodejs          # 容器名称
-    restart: always                 # 重启方式
-    depends_on:                     # 启动顺序
+    build: # 这里指的是我们刚刚撸的 Dockerfile 文件
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs # 镜像名称
+    container_name: nodejs # 容器名称
+    restart: always # 重启方式
+    depends_on: # 启动顺序
       - sharehouse_mysql
-    links:                          # 容器连接
+    links: # 容器连接
       - sharehouse_mysql:sharehouse_mysql
-    networks:                       # 加入指定网络
-       - app-network 
+    networks: # 加入指定网络
+      - app-network
 
-    volumes:
-    certbot-etc:
-    certbot-var:
-# 实现通信
-  networks:  
-    app-network: 
+volumes:
+  certbot-etc:
+  certbot-var:
+
+networks: # 实现通信
+  app-network:
     driver: bridge
