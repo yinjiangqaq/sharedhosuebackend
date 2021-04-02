@@ -22,7 +22,7 @@ COPY package.json /usr/src/node-app/shareHouseBackEnd/package.json
 
 # 安装 npm 依赖（使用淘宝的镜像源）
 # 如果使用的境外服务器，无需使用淘宝的镜像源，即改为 `RUN npm i`。
-RUN npm i --registry=https://registry.npm.taobao.org
+RUN npm i --registry=https://registry.npm.taobao.org  --production
 
 # 拷贝所有源代码到工作目录
 COPY . /usr/src/node-app/shareHouseBackEnd
