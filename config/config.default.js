@@ -21,9 +21,10 @@ module.exports = (appInfo) => {
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+    //本地是localhost,线上是sharehouse_mysql
     sequelize: {
       dialect: "mysql",
-      host: "localhost",
+      host: "sharehouse_mysql",
       port: 3306,
       username: "root",
       password: "root",
