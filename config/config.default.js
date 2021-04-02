@@ -24,7 +24,7 @@ module.exports = (appInfo) => {
     //本地是localhost,线上是sharehouse_mysql
     sequelize: {
       dialect: "mysql",
-      host: "sharehouse_mysql",
+      host: "localhost",
       port: 3306,
       username: "root",
       password: "root",
