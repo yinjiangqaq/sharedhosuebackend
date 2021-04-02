@@ -3,9 +3,9 @@ FROM node:10.0-alpine
 
 # 设置时区
 RUN apk --update add tzdata \
-&& cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-&& echo "Asia/Shanghai" > /etc/timezone \
-&& apk del tzdata
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && apk del tzdata
 
 # 创建 app 目录
 RUN mkdir -p /usr/src/node-app/shareHouseBackEnd

@@ -16,9 +16,9 @@ services:
     networks: # 加入指定网络
       - app-network
 
-  sharehouse_mysql:
+  localhost:
     image: mysql:5.7
-    container_name: sharehouse_mysql
+    container_name: localhost
     restart: always
     ports: # 映射端口
       - "3306:3306"
@@ -40,9 +40,9 @@ services:
     container_name: nodejs # 容器名称
     restart: always # 重启方式
     depends_on: # 启动顺序
-      - sharehouse_mysql
+      - localhost
     links: # 容器连接
-      - sharehouse_mysql:sharehouse_mysql
+      - localhost:localhost
     networks: # 加入指定网络
       - app-network
 
