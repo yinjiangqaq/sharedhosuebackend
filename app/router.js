@@ -21,10 +21,18 @@ module.exports = (app) => {
 
   subRouter.post("/getVerifyCode", controller.user.index.getVerifyCode);
 
-  //获取用户信息
+  //获取管理员用户信息
   subRouter.get(
     "/getUserInfo",
     middleware.checkToken(),
     controller.user.index.getUserInfo
   );
+  //获取用户列表信息
+  subRouter.get(
+    "/getUserList",
+    middleware.checkToken(),
+    controller.customer.index.getUserList
+  );
 };
+
+
