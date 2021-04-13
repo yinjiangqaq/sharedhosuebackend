@@ -6,7 +6,7 @@ class CustomerController extends controller {
   async getUserList() {
     const { ctx, app } = this;
     const result = await ctx.curl(
-      `${app.config.blockChain_Baseurl}/WeBASE-Front/trans/handleWithSign`,
+      `${app.config.blockChain_Baseurl}`,
       {
         method: "post",
         dataType: "json", //默认是form，

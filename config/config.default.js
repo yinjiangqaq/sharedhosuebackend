@@ -47,7 +47,7 @@ module.exports = (appInfo) => {
     },
     //加载的额外的文件夹,app.constant
     loaderDirs: ["constant"],
-    blockChain_Baseurl: "http://121.4.149.18:5002/",
+    blockChain_Baseurl: "http://121.4.149.18:5002/WeBASE-Front/trans/handleWithSign",
   };
 
   return {

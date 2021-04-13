@@ -33,6 +33,58 @@ module.exports = (app) => {
     middleware.checkToken(),
     controller.customer.index.getUserList
   );
+
+  //公寓配置相关接口
+
+  //新增房屋配置
+  subRouter.post(
+    "/addRoom",
+    middleware.checkToken(),
+    controller.room.index.addRoom
+  );
+  //查找房屋
+
+  subRouter.post(
+    "/findRoom",
+    middleware.checkToken(),
+    controller.room.index.findRoom
+  );
+  //更改房屋配置
+  subRouter.post(
+    "/changeRoom",
+    middleware.checkToken(),
+    controller.room.index.changeRoom
+  );
+
+  subRouter.post(
+    "/deleteRoom",
+    middleware.checkToken(),
+    controller.room.index.deleteRoom
+  );
+
+  //公共设施配置接口
+  //新增
+  subRouter.post(
+    "/addDevice",
+    middleware.checkToken(),
+    controller.device.index.addDevice
+  );
+  //查找
+  subRouter.post(
+    "/findDevice",
+    middleware.checkToken(),
+    controller.device.index.findDevice
+  );
+  //更改
+  subRouter.post(
+    "/changeDevice",
+    middleware.checkToken(),
+    controller.device.index.changeDevice
+  );
+  //删除
+  subRouter.post(
+    "/deleteDevice",
+    middleware.checkToken(),
+    controller.device.index.deleteDevice
+  );
 };
-
-
