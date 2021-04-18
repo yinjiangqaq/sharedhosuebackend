@@ -28,12 +28,17 @@ module.exports = (app) => {
     controller.user.index.getUserInfo
   );
   //获取用户列表信息
-  subRouter.get(
+  subRouter.post(
     "/getUserList",
     middleware.checkToken(),
     controller.customer.index.getUserList
   );
-
+  //获取用户引用记录列表'
+  subRouter.post(
+    "/getUserCreditList",
+    middleware.checkToken(),
+    controller.customer.index.getUserCreditList
+  );
   //公寓配置相关接口
 
   //新增房屋配置
@@ -86,5 +91,47 @@ module.exports = (app) => {
     "/deleteDevice",
     middleware.checkToken(),
     controller.device.index.deleteDevice
+  );
+
+  //公寓租赁管理
+  //查找
+  subRouter.post(
+    "/findRoomCase",
+    middleware.checkToken(),
+    controller.room.index.findRoomCase
+  );
+  //公寓订单操作
+  subRouter.post(
+    "/roomCaseAction",
+    middleware.checkToken(),
+    controller.room.index.roomCaseAction
+  );
+
+  //公共设施租赁管理
+  //查找
+  subRouter.post(
+    "/findDeviceCase",
+    middleware.checkToken(),
+    controller.device.index.findDeviceCase
+  );
+  //公共设施订单操作
+  subRouter.post(
+    "/deviceCaseAction",
+    middleware.checkToken(),
+    controller.device.index.deviceCaseAction
+  );
+
+  //历史订单管理
+  subRouter.post(
+    "/findCase",
+    middleware.checkToken(),
+    controller.history.index.findCase
+  );
+
+  //扣除信用分
+  subRouter.post(
+    "/deduceCredit",
+    middleware.checkToken(),
+    controller.history.index.deduceCredit
   );
 };

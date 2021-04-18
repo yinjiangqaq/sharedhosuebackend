@@ -2,16 +2,7 @@
 
 const controller = require("egg").Controller;
 const nodemailer = require("nodemailer");
-const emailConfig = {
-  host: "smtp.163.com",
-  port: 465,
-  auth: {
-    user: "15918871221@163.com",
-    pass: "xxx", //授权密码
-  },
-};
-//创建一个smtp客户端对象
-const transporter = nodemailer.createTransport(emailConfig);
+
 class UserController extends controller {
   /**
    * 接口描述
@@ -111,6 +102,16 @@ class UserController extends controller {
     const { ctx, app } = this;
     const query = ctx.request.body;
     const email = query.email;
+    const emailConfig = {
+      host: "smtp.163.com",
+      port: 465,
+      auth: {
+        user: "15918871221@163.com",
+        pass: app.config.smtp_password, //授权密码
+      },
+    };
+    //创建一个smtp客户端对象
+    const transporter = nodemailer.createTransport(emailConfig);
     const user = await ctx.service.user.index.get({ email: email });
     if (user) {
       return ctx.fail({ msg: "该邮箱已注册,请使用别的邮箱" });
