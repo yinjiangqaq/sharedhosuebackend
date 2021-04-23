@@ -37,8 +37,10 @@ class DeviceController extends controller {
       data: paramsObj,
     });
     console.log(MODULE, result.data);
-    if (result.status === 200) {
+    if (result.status === 200 && result.data.message === "Success") {
       return ctx.success({ data: result.data });
+    } else {
+      return ctx.fail({ data: result.data });
     }
   }
 
@@ -162,7 +164,7 @@ class DeviceController extends controller {
       query.pageNum === undefined ? 1 : query.pageNum,
       !!!query.time ? 0 : query.time[0],
       !!!query.time ? 99999999999 : query.time[1],
-      query.caseId === undefined ? 0 : +query.caseId,
+      query.caseId === undefined ? "" : query.caseId,
       query.name === undefined ? "" : query.name,
       0,
       app.constant.common.caseType.common,
@@ -228,7 +230,7 @@ class DeviceController extends controller {
     const paramsObj = app.constant.blockChain.caseInputParams;
     paramsObj.funcName = "setOrder";
     const arr = [
-      query.caseId === undefined ? 0 : +query.caseId,
+      query.caseId === undefined ? "" : query.caseId,
       query.state,
       !!!query.reason ? "无" : query.reason,
     ];

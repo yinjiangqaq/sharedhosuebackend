@@ -14,14 +14,14 @@ class HistoryController extends controller {
       query.pageNum === undefined ? 1 : query.pageNum,
       query.time === undefined ? 0 : query.time[0],
       query.time === undefined ? 99999999999 : query.time[1],
-      query.caseId === undefined ? 0 : +query.caseId,
+      query.caseId === undefined ? "" : query.caseId,
       "",
       query.state === undefined ? 1 : query.state,
       app.constant.common.caseType.history,
     ];
     paramsObj.funcParam = arr;
     //console.log(MODULE, paramsObj);
-
+    console.log(arr);
     const result = await ctx.curl(`${app.config.blockChain_Baseurl}`, {
       method: "post",
       dataType: "json",
@@ -98,7 +98,7 @@ class HistoryController extends controller {
     paramsObj.funcName = "deduceCredit";
     //这里发给区块链那边需要是具体的原因，字符串，所以这边需要处理成字符串
     const arr = [
-      query.caseId === undefined ? 0 : +query.caseId,
+      query.caseId === undefined ? "" : query.caseId,
       !!!query.creditLess
         ? "无"
         : app.constant.common.creditLess.find(

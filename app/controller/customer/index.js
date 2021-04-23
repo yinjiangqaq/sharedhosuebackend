@@ -11,7 +11,7 @@ class CustomerController extends controller {
     const arr = [
       query.pageNum === undefined ? 1 : query.pageNum,
       !!!query.userName ? "" : query.userName,
-      !!!query.userId ? 0 : +query.userId,
+      !!!query.userId ? "": query.userId,
       !!!query.email ? "" : query.email,
     ];
     paramsObj.funcParam = arr;
@@ -72,8 +72,8 @@ class CustomerController extends controller {
     paramsObj.funcName = "getBreakOrder";
     const arr = [
       query.pageNum === undefined ? 1 : query.pageNum,
-      query.userId === undefined ? 0 : +query.userId,
-      query.caseId === undefined ? 0 : +query.caseId,
+      query.userId === undefined ? "" : query.userId,
+      query.caseId === undefined ? "" : query.caseId,
       !!!query.creditLess
         ? "毁坏公共设施"
         : app.constant.common.creditLess.find(
