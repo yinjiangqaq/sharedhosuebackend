@@ -134,4 +134,11 @@ module.exports = (app) => {
     middleware.checkToken(),
     controller.history.index.deduceCredit
   );
+
+  //图片上传接口
+  subRouter.post(
+    "/upload",
+    middleware.checkToken(),
+    controller.upload.index.upload
+  );
 };

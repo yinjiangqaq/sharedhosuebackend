@@ -14,11 +14,31 @@ class DeviceController extends controller {
       !query.contact ||
       !query.description ||
       !query.device ||
-      !query.owner ||
-      !query.price ||
-      !query.setType
+      !query.owner
     ) {
       return ctx.fail({ msg: "配置参数列表不能为空" });
+    }
+    if (
+      query.setType === 0 &&
+      (!query.PriceList ||
+        query.PriceList.filter(
+          (item) => item.time.length === 0 || !!item.price === false
+        ).length > 0)
+    ) {
+      return ctx.fail({
+        msg: "按时计费的时段设置不能为空或者价格设置不能为空",
+      });
+    } else if (+query.setType > 0 && !query.price) {
+      return ctx.fail({ msg: "价格不能为空" });
+    } else if (query.setType !== 0 && !!query.setType === false) {
+      return ctx.fail({ msg: "套餐类型不能为空" });
+    }
+    //按小时计费的时段数组
+    let tempArr = [];
+    if (query.PriceList && query.PriceList.length > 0) {
+      query.PriceList.map((item) => {
+        tempArr.push(`${item.time[0]}-${item.time[1]}-${+item.price}`);
+      });
     }
     paramsObj.funcParam = [
       query.device,
@@ -27,7 +47,8 @@ class DeviceController extends controller {
       query.address,
       query.description,
       query.setType,
-      +query.price,
+      tempArr.join("/"),
+      !!query.price ? +query.price : 0,
     ];
     console.log(MODULE, paramsObj);
     const result = await ctx.curl(`${app.config.blockChain_Baseurl}`, {
@@ -73,7 +94,8 @@ class DeviceController extends controller {
       3: "address",
       4: "description",
       5: "setType",
-      6: "price",
+      6: "PriceList",
+      7: "price",
     };
     for (let i = 0; i < length; i++) {
       let obj = {
@@ -83,10 +105,19 @@ class DeviceController extends controller {
         address: "",
         description: "",
         setType: null,
+        PriceList: [],
         price: null,
       };
       for (let j = 0; j < y; j++) {
-        obj[hash[j]] = result.data[j][i];
+        if (j === 6) {
+          let temp = result.data[j][i].split("/");
+          temp.map((item) => {
+            let tem = item.split("-");
+            obj[hash[j]].push({ time: [tem[0], tem[1]], price: +tem[2] });
+          });
+        } else {
+          obj[hash[j]] = result.data[j][i];
+        }
       }
       resultArr.push(obj);
     }
@@ -94,7 +125,7 @@ class DeviceController extends controller {
       return ctx.success({ data: resultArr });
     }
   }
-
+  //更改公共设施配置
   async changeDevice() {
     const { ctx, app } = this;
     const query = ctx.request.body;
@@ -105,11 +136,31 @@ class DeviceController extends controller {
       !query.contact ||
       !query.description ||
       !query.device ||
-      !query.owner ||
-      !query.price ||
-      !query.setType
+      !query.owner
     ) {
       return ctx.fail({ msg: "配置参数列表不能为空" });
+    }
+    if (
+      query.setType === 0 &&
+      (!query.PriceList ||
+        query.PriceList.filter(
+          (item) => item.time.length === 0 || !!item.price === false
+        ).length > 0)
+    ) {
+      return ctx.fail({
+        msg: "按时计费的时段设置不能为空或者价格设置不能为空",
+      });
+    } else if (+query.setType > 0 && !query.price) {
+      return ctx.fail({ msg: "价格不能为空" });
+    } else if (query.setType !== 0 && !!query.setType === false) {
+      return ctx.fail({ msg: "套餐类型不能为空" });
+    }
+    //按小时计费的时段数组
+    let tempArr = [];
+    if (query.PriceList && query.PriceList.length > 0) {
+      query.PriceList.map((item) => {
+        tempArr.push(`${item.time[0]}-${item.time[1]}-${+item.price}`);
+      });
     }
     paramsObj.funcParam = [
       query.owner,
@@ -117,7 +168,8 @@ class DeviceController extends controller {
       query.address,
       query.description,
       query.setType,
-      +query.price,
+      tempArr.join("/"),
+      !!query.price ? +query.price : 0,
     ];
     console.log(MODULE, paramsObj);
     const result = await ctx.curl(`${app.config.blockChain_Baseurl}`, {
@@ -127,10 +179,13 @@ class DeviceController extends controller {
       data: paramsObj,
     });
     console.log(MODULE, result.data);
-    if (result.status === 200) {
+    if (result.status === 200 && result.data.message === "Success") {
       return ctx.success({ data: result.data });
+    } else {
+      return ctx.fail({ data: result.data });
     }
   }
+  //删除公共设施
   async deleteDevice() {
     const { ctx, app } = this;
     const query = ctx.request.body;

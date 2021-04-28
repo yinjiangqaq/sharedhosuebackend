@@ -11,7 +11,7 @@ class CustomerController extends controller {
     const arr = [
       query.pageNum === undefined ? 1 : query.pageNum,
       !!!query.userName ? "" : query.userName,
-      !!!query.userId ? "": query.userId,
+      !!!query.userId ? "" : query.userId,
       !!!query.email ? "" : query.email,
     ];
     paramsObj.funcParam = arr;
@@ -95,6 +95,7 @@ class CustomerController extends controller {
       2: "userId",
       3: "caseId",
       4: "creditLess",
+      5: "file",
     };
     let y = result.data.length;
     if (y === 0)
@@ -112,6 +113,7 @@ class CustomerController extends controller {
         userId: null,
         caseId: null,
         creditLess: "",
+        file: "",
       };
       //排除第一个总数的项
       for (let j = 1; j < y; j++) {

@@ -45,6 +45,8 @@ module.exports = (appInfo) => {
     jwt: {
       secret: "sharedhouse",
     },
+    //图片上传地址
+    uploadDir: "app/public/avatar/upload",
     //加载的额外的文件夹,app.constant
     loaderDirs: ["constant"],
     blockChain_Baseurl:

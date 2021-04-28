@@ -44,7 +44,7 @@ class UserController extends controller {
         },
         app.config.jwt.secret, //加密的密钥
         {
-          expiresIn: "1h", //过期时间
+          expiresIn: "10h", //过期时间
         }
       );
       console.log("UserLoginController", token);

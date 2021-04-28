@@ -3,6 +3,7 @@
 const controller = require("egg").Controller;
 const MODULE = "enter into RoomController";
 class RoomController extends controller {
+  //公寓配置管理新增接口
   async addRoom() {
     const { ctx, app } = this;
     const query = ctx.request.body;
@@ -15,10 +16,16 @@ class RoomController extends controller {
       !query.owner ||
       !query.contact ||
       !query.description ||
-      !query.price
+      !query.price ||
+      !query.file ||
+      !query.roomType
     ) {
       return ctx.fail({ msg: "配置参数列表不能为空" });
     }
+    const picUrl =
+      typeof query.file === "object"
+        ? query.file.file.response.data.file
+        : query.file;
     paramsObj.funcParam = [
       query.name,
       query.address,
@@ -26,6 +33,8 @@ class RoomController extends controller {
       query.contact,
       query.description,
       +query.price,
+      picUrl,
+      query.roomType,
     ];
     console.log(MODULE, paramsObj);
     const result = await ctx.curl(`${app.config.blockChain_Baseurl}`, {
@@ -41,7 +50,7 @@ class RoomController extends controller {
       return ctx.fail({ data: result.data });
     }
   }
-
+  //公寓配置管理更改接口
   async changeRoom() {
     const { ctx, app } = this;
     const query = ctx.request.body;
@@ -53,10 +62,23 @@ class RoomController extends controller {
       !query.owner ||
       !query.contact ||
       !query.description ||
-      !query.price
+      !query.price ||
+      !query.file ||
+      !query.roomType
     ) {
       return ctx.fail({ msg: "配置参数列表不能为空" });
     }
+    const picUrl =
+      typeof query.file === "object"
+        ? query.file.file.response.data.file
+        : query.file;
+    let tempArr = [];
+    if (query.PriceList && query.PriceList.length > 0) {
+      query.PriceList.map((item) => {
+        tempArr.push(`${item.time[0]}-${item.time[1]}-${+item.price}`);
+      });
+    }
+
     paramsObj.funcParam = [
       query.name,
       query.address,
@@ -64,6 +86,9 @@ class RoomController extends controller {
       query.contact,
       query.description,
       +query.price,
+      picUrl,
+      query.roomType,
+      tempArr.join("/"),
     ];
     console.log(MODULE, paramsObj);
     const result = await ctx.curl(`${app.config.blockChain_Baseurl}`, {
@@ -73,11 +98,13 @@ class RoomController extends controller {
       data: paramsObj,
     });
     console.log(MODULE, result.data);
-    if (result.status === 200) {
+    if (result.status === 200 && result.data.message === "Success") {
       return ctx.success({ data: result.data });
+    } else {
+      return ctx.fail({ data: result.data });
     }
   }
-
+  //公寓配置管理查找接口
   async findRoom() {
     const { ctx, app } = this;
     const query = ctx.request.body;
@@ -107,6 +134,9 @@ class RoomController extends controller {
       3: "contact",
       4: "description",
       5: "price",
+      6: "file",
+      7: "roomType",
+      8: "PriceList",
     };
     for (let i = 0; i < length; i++) {
       let obj = {
@@ -116,9 +146,25 @@ class RoomController extends controller {
         contact: "",
         description: "",
         price: null,
+        file: "",
+        roomType: "",
+        PriceList: [],
       };
+
       for (let j = 0; j < y; j++) {
-        obj[hash[j]] = result.data[j][i];
+        if (j === 8) {
+          if (!!result.data[j][i] === false) {
+            obj[hash[j]] = [];
+          } else {
+            let temp = result.data[j][i].split("/");
+            temp.map((item) => {
+              let tem = item.split("-");
+              obj[hash[j]].push({ time: [+tem[0], +tem[1]], price: +tem[2] });
+            });
+          }
+        } else {
+          obj[hash[j]] = result.data[j][i];
+        }
       }
       resultArr.push(obj);
     }
@@ -126,6 +172,7 @@ class RoomController extends controller {
       return ctx.success({ data: resultArr });
     }
   }
+  //公寓配置管理删除接口
   async deleteRoom() {
     const { ctx, app } = this;
     const query = ctx.request.body;

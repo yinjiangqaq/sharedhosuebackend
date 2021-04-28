@@ -37,6 +37,7 @@ class HistoryController extends controller {
       4: "time",
       5: "state",
       6: "reason",
+      7: "file",
     };
     //state为通过的哈希表
     const hash_2 = {
@@ -46,6 +47,7 @@ class HistoryController extends controller {
       4: "time",
       5: "state",
       6: "creditLess",
+      7: "file",
     };
     let y = result.data.length;
     if (y === 0)
@@ -64,7 +66,8 @@ class HistoryController extends controller {
         customer: "",
         time: null,
         state: null,
-        reason: "",
+        creditLess: "",
+        file:''
       };
       //排除第一个总数的项
       for (let j = 1; j < y; j++) {
@@ -96,6 +99,10 @@ class HistoryController extends controller {
     const query = ctx.request.body;
     const paramsObj = app.constant.blockChain.caseInputParams;
     paramsObj.funcName = "deduceCredit";
+    const picUrl =
+      typeof query.file === "object"
+        ? query.file.file.response.data.file
+        : query.file; //上传的图片的地址
     //这里发给区块链那边需要是具体的原因，字符串，所以这边需要处理成字符串
     const arr = [
       query.caseId === undefined ? "" : query.caseId,
@@ -104,6 +111,7 @@ class HistoryController extends controller {
         : app.constant.common.creditLess.find(
             (item) => item.value === query.creditLess
           ).label,
+      picUrl,
     ];
     paramsObj.funcParam = arr;
     console.log(arr);
